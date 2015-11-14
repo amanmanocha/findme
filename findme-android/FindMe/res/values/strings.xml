@@ -10,10 +10,13 @@
     <string name="request">Request</string>
     <string name="sendingRequest">Sending Request \.\.\.</string>
     <string name="addToContact">Add</string>
+    <string name="update">Update</string>
+    <string name="prompt_old_phone">Set Your Old Number</string>
     <string name="desc">One of your friends may have changed his/her phone number but not yet notify you? Try to find!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_search_result">Search Result</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_update_phone_number">UpdatePhoneNumberActivity</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 
 </resources>

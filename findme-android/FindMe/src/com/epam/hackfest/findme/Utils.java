@@ -15,7 +15,8 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
+
+import android.widget.EditText;
 
 import com.epam.hackfest.findme.domain.SearchResult;
 
@@ -23,6 +24,9 @@ public class Utils {
 	
 	private final static String HOSTNAME = "http://192.168.2.123:8080/";
 	private final static String UTF_8 = "UTF-8";
+	
+	private static String userName;
+	private static String phoneNumber;
 
 	private static Object post(String strUrl, Map<String, String> params){
 		try{
@@ -134,12 +138,46 @@ public class Utils {
 		return sr;
 	}
 
-	public static Object sendRequest() {
-		return null;
+	public static Object sendRequest(String destPhoneNumber) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("dest", destPhoneNumber);
+		String url = HOSTNAME+"request";
+		return post(url, params);
+	}
+	
+	public static Object updatePhoneNumbers(String currNumber, String... numbers ){
+		HashMap<String, String> params = new HashMap<String, String>();
+		if( numbers != null && numbers.length > 0){
+			StringBuilder sb = new StringBuilder();
+			for( int i=0; i<numbers.length; i++){
+				sb.append(numbers[i]).append(',');
+			}
+			sb.deleteCharAt(sb.length()-1);
+			params.put("old", sb.toString());
+		}
+		if( currNumber != null ){
+			params.put("curr", currNumber);
+		}
+		String url = HOSTNAME+"update";
+		return post(url, params);
 	}
 
 	public static boolean isSignedIn() {
-		return false;
+		return userName != null && phoneNumber != null;
+	}
+	
+	public static boolean isValid(EditText editText) {
+		String str = editText.getText().toString();
+		if( str == null || str.trim().length() == 0){
+			editText.setError("This field is required");
+			editText.requestFocus();
+			return false;
+		}
+		return true;
+	}
+
+	public static Object update(String phone, String isPrivate) {
+		return null;
 	}
 
 }

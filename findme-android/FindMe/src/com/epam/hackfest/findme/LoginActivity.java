@@ -38,13 +38,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		boolean ok = true;
 		if( v == buttonSignIn ){
-			ok = ok && checkEmpty(editTextName);
-			ok = ok && checkEmpty(editTextPhone);
-			ok = ok && checkEmpty(editTextPassword);
-		}
-		if( ok ){
+			if( !Utils.isValid(editTextName) )return;
+			if( !Utils.isValid(editTextPhone) )return;
+			if( !Utils.isValid(editTextPassword) )return;
+			
 			signIn();
 		}
 	}
@@ -81,16 +79,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 		};
 		
 		task.execute(name, phone, pwd);
-	}
-
-	private boolean checkEmpty(EditText editText) {
-		String str = editText.getText().toString();
-		if( str == null || str.trim().length() == 0){
-			editText.setError("This field is required");
-			editText.requestFocus();
-			return false;
-		}
-		return true;
 	}
 
 }

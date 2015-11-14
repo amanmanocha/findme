@@ -1,5 +1,7 @@
 package com.epam.hackfest.findme;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,28 +27,29 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	private Button buttonAdd;
 	private TextView textViewResult;
 	private Button buttonRequest;
+	private SearchResult searchResult;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		String resp = getIntent().getExtras().getString("resp");
-		SearchResult sr = Utils.parseSearchResult(resp);
-		if( sr.hasPhoneNumbers() && !sr.isPrivate() ){
-			createWithResults(sr);
+		searchResult = Utils.parseSearchResult(resp);
+		if( searchResult.hasPhoneNumbers() && !searchResult.isPrivate() ){
+			createWithResults();
 		}else{
-			createWithoutResults(sr);
+			createWithoutResults();
 		}
 		
 	}
 	
-	private void createWithoutResults(SearchResult sr) {
+	private void createWithoutResults() {
 		setContentView(R.layout.activity_search_no_result);
 		
 		this.textViewResult = (TextView)this.findViewById(R.id.textViewResult);
 		this.buttonRequest = (Button)this.findViewById(R.id.buttonRequest);
 		
-		if( sr.isPrivate() ){
+		if( searchResult.isPrivate() ){
 			buttonRequest.setVisibility(View.VISIBLE);
 			buttonRequest.setOnClickListener(this);
 		}else{
@@ -54,18 +57,17 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private void createWithResults(SearchResult sr){
+	private void createWithResults(){
 		
 		setContentView(R.layout.activity_search_result);
 		
 		listView = (ListView)this.findViewById(R.id.listViewResult);
-		listView.setAdapter(new ResultAdapter(this.getApplicationContext()));
+		listView.setAdapter(new ResultAdapter(this.getApplicationContext(), searchResult));
 		
 		this.buttonCall = (Button)this.findViewById(R.id.buttonCall);
 		this.buttonAdd = (Button)this.findViewById(R.id.buttonAdd);
 		
 		buttonCall.setOnClickListener(this);
-		
 	}
 	
 	@Override
@@ -89,7 +91,7 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	}
 	
 	private void sendRequest() {
-		AsyncTask<Void, Void, Object> task = new AsyncTask<Void, Void, Object>(){
+		AsyncTask<String, Void, Object> task = new AsyncTask<String, Void, Object>(){
 			
 			@Override
 			protected void onPostExecute(Object result) {
@@ -110,11 +112,11 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 			}
 
 			@Override
-			protected Object doInBackground(Void... params) {
-				return Utils.sendRequest();
+			protected Object doInBackground(String... params) {
+				return Utils.sendRequest(params[0]);
 			}
 		};
-		task.execute();
+		task.execute(searchResult.getPhoneNumbers().get(0));
 	}
 
 	@Override
@@ -157,19 +159,21 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	private class ResultAdapter extends BaseAdapter{
 
 		private Context context;
+		private List<String> phoneNumbers;
 
-		public ResultAdapter(Context applicationContext) {
+		public ResultAdapter(Context applicationContext, SearchResult searchResult) {
 			this.context = applicationContext;
+			this.phoneNumbers = searchResult.getPhoneNumbers();
 		}
 
 		@Override
 		public int getCount() {
-			return 1;
+			return phoneNumbers.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return position;
+			return phoneNumbers.get(position);
 		}
 
 		@Override
@@ -180,7 +184,8 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView textView = new TextView(context);
-			textView.setText("Cool");
+			textView.setText(phoneNumbers.get(position));
+			textView.setPadding(10, 20, 20, 20);
 			return textView;
 		}
 		
