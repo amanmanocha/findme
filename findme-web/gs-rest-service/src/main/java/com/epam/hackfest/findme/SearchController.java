@@ -44,7 +44,6 @@ public class SearchController {
 			return result.get();
 		}
 		return null;
-
 	}
 
 	@RequestMapping("/register")
