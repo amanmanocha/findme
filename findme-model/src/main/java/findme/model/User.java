@@ -33,4 +33,16 @@ public class User implements Serializable {
 			throw new IllegalArgumentException("Phone number can not be empty");
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public List<PhoneNumber> getPhoneNumbers() {
+		return phoneNumbers;
+	}
+
 }

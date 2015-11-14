@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="lib" path="build/libs/gs-rest-service-0.1.0.jar"/>
-	<classpathentry kind="lib" path="gradle/wrapper/gradle-wrapper.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/admin/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.0.7.RELEASE/777e9502c4c2de150918a746fa22734d3eff81e0/spring-core-4.0.7.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/admin/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-dependency-tools/1.1.8.RELEASE/8723150f4b6942d50ec8bb6c141947a6d67530d9/spring-boot-dependency-tools-1.1.8.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/admin/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/1.1.8.RELEASE/2fee2127c7ce02bf5a3a09685db9733dd638851f/spring-boot-starter-web-1.1.8.RELEASE.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/findme-model"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

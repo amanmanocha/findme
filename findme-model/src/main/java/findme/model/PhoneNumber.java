@@ -14,4 +14,8 @@ public class PhoneNumber implements Serializable {
 		return new PhoneNumber(number);
 	}
 
+	public int getNumber() {
+		return number;
+	}
+	
 }

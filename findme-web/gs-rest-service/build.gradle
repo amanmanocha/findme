@@ -26,7 +26,12 @@ repositories {
 }
 
 dependencies {
+	compile("com.typesafe.akka:akka-persistence:2.4.0")
+	compile("org.iq80.leveldb:leveldb:0.7")
+	compile("org.fusesource.leveldbjni:leveldbjni-all:1.8")
+	compile("commons-validator:commons-validator:1.4.0")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.scala-lang:scala-library:2.11.7")
     testCompile("junit:junit")
 }
 
