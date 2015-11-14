@@ -9,8 +9,8 @@ That's it! No more hassles to share your new number with everyone manually, keep
 
 Available here:
 
-https://192.168.2.38:8080/register?name={name}&phone={current-phone-number}&password={password}
+http://192.168.2.38:8080/register?name={name}&phone={current-phone-number}&password={password}
 
-https://192.168.2.38:8080/search?name={name}&phone={old-phone-number}
+http://192.168.2.38:8080/search?name={name}&phone={old-phone-number}
 
-https://192.168.2.38:8080/update?curr={current-phone-number}&old={old-phone-number}&isPrivate={true/false}
+http://192.168.2.38:8080/update?curr={current-phone-number}&old={old-phone-number}&isPrivate={true/false}
