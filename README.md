@@ -1,4 +1,4 @@
-"<findMe>" is a rather simple, cool and easy-to-use application to share your current running number with anyone you wish to.
+findMe is a rather simple, cool and easy-to-use application to share your current running number with anyone you wish to.
 
 Allows user to look up for your current number by entering your name and any one of your old contact number. Search function does not require the registration.
 
