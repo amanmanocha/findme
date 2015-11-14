@@ -2,7 +2,6 @@ package findme.model.repository;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import sample.persistence.RegisterUserEvent;
