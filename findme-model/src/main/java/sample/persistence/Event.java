@@ -2,11 +2,11 @@ package sample.persistence;
 
 import java.io.Serializable;
 
-public class Command implements Serializable {
+class Event implements Serializable {
     private static final long serialVersionUID = 1L;
     private final String data;
 
-    public Command(String data) {
+    public Event(String data) {
         this.data = data;
     }
 

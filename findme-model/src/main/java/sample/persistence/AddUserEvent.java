@@ -1,16 +1,13 @@
 package sample.persistence;
 
+import java.io.Serializable;
 
-public class AddUserCommand {
-	
+public class AddUserEvent implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private User user;
-	
-	public AddUserCommand(User user) {
-		this.user = user;
-	}
 
-	public void validate() {
+	public AddUserEvent(User user) {
+		this.user = user;
 	}
 
 	public User getUser() {
