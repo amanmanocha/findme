@@ -1,14 +1,11 @@
 package com.epam.hackfest.findme;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,19 +40,26 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				String name = editTextName.getText().toString();
 				String phone = editTextPhone.getText().toString();
-				if( name == null || name.trim().length() == 0 ){
-					editTextName.setError("Empty Name!");
+				if( !Utils.isValid(editTextName) ){
 					return;
 				}
-				if( phone == null || phone.trim().length() == 0 ){
-					editTextPhone.setError("Empty Phone Number!");
+				if( !Utils.isValid(editTextPhone) ){
 					return;
 				}
 				doSearch(name, phone);
 			}
 		});
+        
+        startPullService();
+        
+        registerReceiver();
     }
     
+	private void registerReceiver() {
+		IntentFilter broadcastFilter = new IntentFilter(Utils.REQUEST_BROADCAST);
+        LocalBroadcastManager.getInstance(this).registerReceiver(new ResponseReceiver(), broadcastFilter);
+	}
+
 	private void doSearch(String name, String phone) {
 		
 		AsyncTask<String, Void, Object> task = new AsyncTask<String, Void, Object>(){
@@ -93,8 +97,37 @@ public class MainActivity extends Activity {
 		
 		task.execute(name, phone);
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if( requestCode == LoginActivity.LOGIN ){
+			if( resultCode == RESULT_OK ){
+				startPullService();
+			}
+		}
+	}
 
-    @Override
+    private void startPullService() {
+    	if( !Utils.isSignedIn() ){
+	    	Intent serviceIntent = new Intent(this, PullService.class);
+	        startService(serviceIntent);
+    	}
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+    	if( Utils.isSignedIn() ){
+    		menu.getItem(0).setVisible(true);
+    		menu.getItem(1).setVisible(false);
+    	}else{
+    		menu.getItem(0).setVisible(false);
+    		menu.getItem(1).setVisible(true);
+    	}
+    	return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -102,11 +135,14 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_update) {
+        	Intent intent = new Intent(this, ProfileActivity.class);
+        	startActivity(intent);
+            return true;
+        }else if( id == R.id.action_sigin ){
+        	Intent intent = new Intent(this, LoginActivity.class);
+        	startActivityForResult(intent, LoginActivity.LOGIN);
             return true;
         }
         return super.onOptionsItemSelected(item);

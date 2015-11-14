@@ -1,6 +1,7 @@
 package com.epam.hackfest.findme;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -33,6 +34,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		this.progressBar = (ProgressBar)this.findViewById(R.id.progressBarSignIn);
 		this.buttonSignIn = (Button)this.findViewById(R.id.buttonSignIn);
 		
+		progressBar.setVisibility(View.INVISIBLE);
 		buttonSignIn.setOnClickListener(this);
 	}
 
@@ -59,7 +61,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 				super.onPostExecute(result);
 				progressBar.setVisibility(View.INVISIBLE);
 				if( result instanceof String ){
-					
+					Intent returnIntent = new Intent();
+					String name = editTextName.getText().toString();
+					String phone = editTextPhone.getText().toString();
+					Utils.setSignInParams(name, phone);
+					setResult(Activity.RESULT_OK,returnIntent);
+					finish();
 				}
 			}
 

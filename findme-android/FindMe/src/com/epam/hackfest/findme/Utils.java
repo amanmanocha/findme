@@ -18,12 +18,14 @@ import org.json.JSONObject;
 
 import android.widget.EditText;
 
+import com.epam.hackfest.findme.domain.Request;
 import com.epam.hackfest.findme.domain.SearchResult;
 
 public class Utils {
 	
 	private final static String HOSTNAME = "http://192.168.2.123:8080/";
 	private final static String UTF_8 = "UTF-8";
+	public static final String REQUEST_BROADCAST = "REQUEST_BROADCAST";
 	
 	private static String userName;
 	private static String phoneNumber;
@@ -177,7 +179,22 @@ public class Utils {
 	}
 
 	public static Object update(String phone, String isPrivate) {
-		return null;
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("curr", phoneNumber);
+		params.put("old", phone);
+		params.put("isPrivate", isPrivate);
+		
+		String url = HOSTNAME+"update";
+		return post(url, params);
+	}
+
+	public static void setSignInParams(String name, String phone) {
+		userName = name;
+		phoneNumber = phone;
+	}
+
+	public static Request pull() {
+		return new Request();
 	}
 
 }

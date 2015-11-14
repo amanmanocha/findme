@@ -3,9 +3,15 @@
     tools:context="com.epam.hackfest.findme.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_update"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/action_settings"/>
+        android:title="@string/update"/>
+    
+    <item
+        android:id="@+id/action_sigin"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_sign_in_short"/>
 
 </menu>
