@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import android.widget.EditText;
 
 import com.epam.hackfest.findme.domain.Request;
+import com.epam.hackfest.findme.domain.ResultState;
 import com.epam.hackfest.findme.domain.SearchResult;
 
 public class Utils {
@@ -140,6 +141,23 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return sr;
+	}
+	
+	public static ResultState parseResultState(String jsonString) {
+		ResultState resultState = new ResultState();
+		try {
+			JSONObject obj = new JSONObject(jsonString);
+			if( obj.has("errorCode") ){
+				resultState.setErrorCode(obj.getString("errorCode"));
+			}
+			
+			if( obj.has("errorMessage") ){
+				resultState.setErrorMessage(obj.getString("errorMessage"));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return resultState;
 	}
 
 	public static Object sendRequest(String destPhoneNumber) {
