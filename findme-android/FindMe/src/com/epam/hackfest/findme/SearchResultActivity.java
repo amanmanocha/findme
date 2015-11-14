@@ -3,10 +3,15 @@ package com.epam.hackfest.findme;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract.Data;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -130,7 +135,27 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	}
 
 	private void addNumberToContactList() {
-		
+		String userName="user1";
+		String phone="13812341234";
+
+		Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
+		ContentResolver resolver = this.getContentResolver();
+		ContentValues values = new ContentValues();
+		long contactid = ContentUris.parseId(resolver.insert(uri, values));
+
+		uri = Uri.parse("content://com.android.contacts/data");
+
+		values.put("raw_contact_id", contactid);
+		values.put(Data.MIMETYPE, "vnd.android.cursor.item/name");
+		values.put("data1", userName);
+		resolver.insert(uri, values);
+		values.clear();
+
+		values.put("raw_contact_id", contactid);
+		values.put(Data.MIMETYPE, "vnd.android.cursor.item/phone_v2");
+		values.put("data1", phone);
+		resolver.insert(uri, values);
+		values.clear();
 	}
 
 	private void callNumber() {
