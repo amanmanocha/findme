@@ -7,7 +7,8 @@ public class RegisterUserCommand {
 	
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
-	private User user;
+	
+	private final User user;
 	
 	public RegisterUserCommand(User user) {
 		this.user = user;
