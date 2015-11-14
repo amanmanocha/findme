@@ -8,6 +8,7 @@ You can mark your number as private if you wish to, in which case the user who i
 That's it! No more hassles to share your new number with everyone manually, keep your friends/relatives happy!
 
 Available here:
-https://192.168.2.38:8080/register?name=<name>&phone=<current-phone-number>&password=<password>
-https://192.168.2.38:8080/search?name=<name>&phone=<old-phone-number>
-https://192.168.2.38:8080/update?curr=<current-phone-number>&old=<old-phone-number>&isPrivate=false
+
+https://192.168.2.38:8080/register?name={name}&phone={current-phone-number}&password={password}
+https://192.168.2.38:8080/search?name={name}&phone={old-phone-number}
+https://192.168.2.38:8080/update?curr={current-phone-number}&old={old-phone-number}&isPrivate={true/false}
