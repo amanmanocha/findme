@@ -1,5 +1,7 @@
 package com.epam.hackfest.findme;
 
+import com.epam.hackfest.findme.domain.ResultState;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 /**
  * A login screen that offers login via email/password.
@@ -61,13 +64,18 @@ public class LoginActivity extends Activity implements OnClickListener {
 				super.onPostExecute(result);
 				progressBar.setVisibility(View.INVISIBLE);
 				if( result instanceof String ){
-					Intent returnIntent = new Intent();
-					String name = editTextName.getText().toString();
-					String phone = editTextPhone.getText().toString();
-					Utils.setSignInParams(name, phone);
-					setResult(Activity.RESULT_OK,returnIntent);
-					finish();
+					ResultState rs = Utils.parseResultState(result.toString());
+					if( "0".equals(rs.getErrorCode()) ){
+						Intent returnIntent = new Intent();
+						String name = editTextName.getText().toString();
+						String phone = editTextPhone.getText().toString();
+						Utils.setSignInParams(name, phone);
+						setResult(Activity.RESULT_OK,returnIntent);
+						finish();
+						return;
+					}
 				}
+				Toast.makeText(getApplicationContext(), "Signin Failed", Toast.LENGTH_LONG).show();
 			}
 
 			@Override
