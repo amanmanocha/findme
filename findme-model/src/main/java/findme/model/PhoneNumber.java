@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 public class PhoneNumber implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int number;
+	private final String number;
 
-	public PhoneNumber(int number) {
+	public PhoneNumber(String number) {
 		this.number = number;
 	}
 
-	public static PhoneNumber newNumber(int number) {
-		return new PhoneNumber(number);
+	public String getNumber() {
+		return number;
 	}
 
-	public int getNumber() {
-		return number;
+	public static PhoneNumber empty() {
+		return new PhoneNumber("");
 	}
 	
 }

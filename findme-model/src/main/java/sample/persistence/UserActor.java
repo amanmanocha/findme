@@ -1,7 +1,5 @@
 package sample.persistence;
 
-//#persistent-actor-example
-
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
@@ -20,7 +18,6 @@ import findme.model.PhoneNumber;
 import findme.model.User;
 import findme.model.repository.Users;
 
-
 public class UserActor extends UntypedPersistentActor {
 	@Override
 	public String persistenceId() {
@@ -35,8 +32,8 @@ public class UserActor extends UntypedPersistentActor {
 
 	@Override
 	public void onReceiveRecover(Object msg) {
-		if (msg instanceof AddUserEvent) {
-			userRepository.update((AddUserEvent) msg);
+		if (msg instanceof RegisterUserEvent) {
+			userRepository.update((RegisterUserEvent) msg);
 		} else if (msg instanceof SnapshotOffer) {
 			userRepository = (Users) ((SnapshotOffer) msg).snapshot();
 		} else {
@@ -49,55 +46,62 @@ public class UserActor extends UntypedPersistentActor {
 		if (command instanceof RegisterUserCommand) {
 			registerUser(command);
 		}
-		if(command instanceof AddNewNumberCommand) {
-			addNewNumber(command);
+		if (command instanceof SetPrivateNumberCommand) {
+			setPrivateNumber(command);
 		}
 		if (command instanceof String) {
 			String commandStr = (String) command;
-			if(commandStr.equals("print")) {
+			if (commandStr.equals("print")) {
 				System.out.println(getNumEvents());
 			}
-			if(commandStr.equals("get")) {
+			if (commandStr.equals("get")) {
 				sender().tell(userRepository.getUsers().get(0), null);
 			}
 		}
 	}
 
-	private void addNewNumber(Object command) {
-		AddNewNumberCommand addUserCommand = (AddNewNumberCommand) command;
-		addUserCommand.validate();
-		
-		final AddNewNumberEvent addNumberEvent = new AddNewNumberEvent(addUserCommand.getUser());
-		persist(addNumberEvent, new Procedure<AddNewNumberEvent>() {
-			public void apply(AddNewNumberEvent evt) throws Exception {
-			}
-		});
-	}
-
 	private void registerUser(Object command) {
 		RegisterUserCommand addUserCommand = (RegisterUserCommand) command;
 		addUserCommand.validate();
-		
-		final AddUserEvent addUserEvent = new AddUserEvent(addUserCommand.getUser());
-		persistAll(Lists.newArrayList(addUserEvent), new Procedure<AddUserEvent>() {
-			public void apply(AddUserEvent evt) throws Exception {
-				userRepository.update(addUserEvent);
-					getContext().system().eventStream().publish(evt);
+
+		final RegisterUserEvent addUserEvent = new RegisterUserEvent(
+				addUserCommand.getFirstName(), addUserCommand.getLastName(),
+				addUserCommand.getPhoneNumber());
+		persistAll(Lists.newArrayList(addUserEvent),
+				new Procedure<RegisterUserEvent>() {
+					public void apply(RegisterUserEvent evt) throws Exception {
+						userRepository.update(addUserEvent);
+						getContext().system().eventStream().publish(evt);
+					}
+				});
+	}
+
+	private void setPrivateNumber(Object command) {
+		SetPrivateNumberCommand setPrivateNumberCommand = (SetPrivateNumberCommand) command;
+
+		final SetPrivateNumberEvent setPrivateNumberEvent = new SetPrivateNumberEvent(
+				setPrivateNumberCommand.getCurrentNumber(),
+				setPrivateNumberCommand.getOldNumber(),
+				setPrivateNumberCommand.isCurrentNumberPublic());
+		persist(setPrivateNumberEvent, new Procedure<SetPrivateNumberEvent>() {
+			public void apply(SetPrivateNumberEvent evt) throws Exception {
+				userRepository.update(evt);
+				getContext().system().eventStream().publish(evt);
 			}
 		});
 	}
-	
+
 	public static void main(String... args) throws Exception {
 		final ActorSystem system = ActorSystem.create("example");
 		final ActorRef persistentActor = system.actorOf(
-				Props.create(UserActor.class),
-				"persistentUserActor-4-java");
+				Props.create(UserActor.class), "persistentUserActor-4-java");
 
-		persistentActor.tell(new RegisterUserCommand(new User("Aman", "Manocha", Lists.newArrayList(PhoneNumber.newNumber(1)))), null);
+		persistentActor
+				.tell(new RegisterUserCommand("Aman", "Manocha", new PhoneNumber("123456")), null);
 
 		Timeout timeout = new Timeout(Duration.create(5, "seconds"));
 		Future<Object> future = Patterns.ask(persistentActor, "get", timeout);
-		
+
 		User result = (User) Await.result(future, timeout.duration());
 		System.out.println(result);
 		Thread.sleep(1000);
@@ -106,4 +110,3 @@ public class UserActor extends UntypedPersistentActor {
 		system.terminate();
 	}
 }
-

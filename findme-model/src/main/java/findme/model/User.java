@@ -1,36 +1,31 @@
 package findme.model;
 
 import java.io.Serializable;
-import java.util.List;
-
-import org.apache.commons.validator.GenericValidator;
-import org.apache.commons.validator.Validator;
-
-import com.sun.org.apache.xerces.internal.impl.validation.ValidationState;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final String firstName;
 	private final String lastName;
-	private final List<PhoneNumber> phoneNumbers;
+	private final PhoneNumber currentPhoneNumber;
+	private final PhoneNumber oldPhoneNumber;
+	private final boolean isCurrentNumberPublic;
 
-	public User(String firstName, String lastName,
-			List<PhoneNumber> phoneNumbers) {
+	private User(String firstName, String lastName,
+			PhoneNumber currentPhoneNumber, PhoneNumber oldPhoneNumber,
+			boolean isCurrentNumberPublic) {
+		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.phoneNumbers = phoneNumbers;
+		this.currentPhoneNumber = currentPhoneNumber;
+		this.oldPhoneNumber = oldPhoneNumber;
+		this.isCurrentNumberPublic = isCurrentNumberPublic;
 	}
-	
-	private void validate() {
-		if(firstName == null)
-			throw new NullPointerException();
-		if(lastName == null)
-			throw new NullPointerException();
-		if(phoneNumbers == null)
-			throw new NullPointerException();
-		if(phoneNumbers.isEmpty())
-			throw new IllegalArgumentException("Phone number can not be empty");
+
+	public static User newUser(String firstName, String lastName,
+			PhoneNumber phoneNumber) {
+		return new User(firstName, lastName, phoneNumber, PhoneNumber.empty(),
+				true);
 	}
 
 	public String getFirstName() {
@@ -41,8 +36,21 @@ public class User implements Serializable {
 		return lastName;
 	}
 
-	public List<PhoneNumber> getPhoneNumbers() {
-		return phoneNumbers;
+	public PhoneNumber getCurrentPhoneNumber() {
+		return currentPhoneNumber;
+	}
+
+	public boolean isCurrentNumberPublic() {
+		return isCurrentNumberPublic;
+	}
+
+	public PhoneNumber getOldPhoneNumber() {
+		return oldPhoneNumber;
+	}
+
+	public User withUpdatedOldNumber(PhoneNumber oldPhoneNumber, boolean isCurrentNumberPublic) {
+		return new User(firstName, lastName, currentPhoneNumber,
+				oldPhoneNumber, isCurrentNumberPublic);
 	}
 
 }
