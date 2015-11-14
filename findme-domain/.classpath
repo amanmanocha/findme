@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="target/scala-2.11/classes" path="src/main/scala-2.11"/>
-	<classpathentry kind="src" output="target/scala-2.11/classes" path="src/main/scala"/>
 	<classpathentry kind="src" output="target/scala-2.11/classes" path="src/main/java"/>
-	<classpathentry kind="src" output="target/scala-2.11/test-classes" path="src/test/scala-2.11"/>
-	<classpathentry kind="src" output="target/scala-2.11/test-classes" path="src/test/scala"/>
-	<classpathentry kind="src" output="target/scala-2.11/test-classes" path="src/test/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Aman/.ivy2/cache/com.typesafe.akka/akka-persistence_2.11/jars/akka-persistence_2.11-2.4.0.jar"/>
