@@ -24,7 +24,7 @@ import com.epam.hackfest.findme.domain.SearchResult;
 
 public class Utils {
 	
-	private final static String HOSTNAME = "http://192.168.2.123:8080/";
+	private final static String HOSTNAME = "http://192.168.2.38:8080/";
 	private final static String UTF_8 = "UTF-8";
 	public static final String REQUEST_BROADCAST = "REQUEST_BROADCAST";
 	
