@@ -191,7 +191,7 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+			LayoutInflater inflater = LayoutInflater.from(context);
 			View view = inflater.inflate(R.layout.item_result, null);
 			TextView textView = (TextView)view.findViewById(R.id.textViewItem);
 			textView.setText(phoneNumbers.get(position));
