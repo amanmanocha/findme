@@ -1,12 +1,15 @@
 package sample.persistence;
 
+import findme.model.User;
 
-public class AddUserCommand {
+
+public class RegisterUserCommand {
 	
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 	private User user;
 	
-	public AddUserCommand(User user) {
+	public RegisterUserCommand(User user) {
 		this.user = user;
 	}
 

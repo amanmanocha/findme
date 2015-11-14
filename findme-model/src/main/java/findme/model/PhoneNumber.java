@@ -1,4 +1,4 @@
-package sample.persistence;
+package findme.model;
 
 import java.io.Serializable;
 

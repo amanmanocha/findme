@@ -5,14 +5,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
+import findme.model.User;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.japi.Procedure;
 import akka.persistence.SnapshotOffer;
 import akka.persistence.UntypedPersistentActor;
+
+import com.google.common.collect.Lists;
+
+
 class Users implements Serializable {
     private static final long serialVersionUID = 1L;
     private final List<User> users;
@@ -69,8 +72,8 @@ public class UserActor extends UntypedPersistentActor {
 
 	@Override
 	public void onReceiveCommand(Object command) {
-		if (command instanceof AddUserCommand) {
-			AddUserCommand addUserCommand = (AddUserCommand) command;
+		if (command instanceof RegisterUserCommand) {
+			RegisterUserCommand addUserCommand = (RegisterUserCommand) command;
 			addUserCommand.validate();
 			
 			AddUserEvent addUserEvent = new AddUserEvent(addUserCommand.getUser());
