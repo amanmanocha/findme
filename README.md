@@ -9,7 +9,7 @@ That's it! No more hassles to share your new number with everyone manually, keep
 
 Available here:
 
-http://192.168.2.38:8080/register?name={name}&phone={current-phone-number}&password={password}
+http://192.168.2.38:8080/signin?name={name}&phone={current-phone-number}&password={password}
 
 http://192.168.2.38:8080/search?name={name}&phone={old-phone-number}
 
