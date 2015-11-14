@@ -20,4 +20,8 @@ public class Application {
 		final ActorRef persistentActor = system.actorOf(
 				Props.create(UserActor.class), "persistentUserActor-4-java");
 	}
+	
+	public static void getActor() {
+		
+	}
 }
