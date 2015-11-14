@@ -8,10 +8,12 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract.Data;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -189,10 +191,17 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			TextView textView = new TextView(context);
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+			View view = inflater.inflate(R.layout.item_result, null);
+			TextView textView = (TextView)view.findViewById(R.id.textViewItem);
 			textView.setText(phoneNumbers.get(position));
-			textView.setPadding(10, 20, 20, 20);
-			return textView;
+			view.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					v.setBackgroundColor(Color.BLUE);
+				}
+			});
+			return view;
 		}
 		
 	}

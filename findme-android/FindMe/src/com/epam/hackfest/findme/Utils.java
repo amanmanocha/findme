@@ -2,6 +2,7 @@ package com.epam.hackfest.findme;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -9,8 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +51,7 @@ public class Utils {
 	        }
 	        byte[] postDataBytes = postData.toString().getBytes(UTF_8);
 
-	        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("POST");
 	        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 	        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
@@ -127,15 +126,16 @@ public class Utils {
 		SearchResult sr = new SearchResult();
 		try {
 			JSONObject obj = new JSONObject(jsonString);
-			if( obj.has("name") ){
-				sr.setUserName(obj.getString("name"));
+			if( obj.has("firstName") ){
+				sr.setUserName(obj.getString("firstName")+" "+obj.getString("lastName"));
 			}
-			if( obj.has("phones") ){
-				JSONArray array = obj.getJSONArray("phones");
-				for( int i=0; i<array.length(); i++ ){
-					String phoneNumber = array.getString(i);
-					sr.addPhoneNumber(phoneNumber);
-				}
+			if( obj.has("currentPhoneNumber") ){
+				String number = obj.getJSONObject("currentPhoneNumber").getString("number");
+//				for( int i=0; i<array.length(); i++ ){
+//					String phoneNumber = array.getString(i);
+//					sr.addPhoneNumber(phoneNumber);
+//				}
+				sr.addPhoneNumber(number);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

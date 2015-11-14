@@ -72,10 +72,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 						Utils.setSignInParams(name, phone);
 						setResult(Activity.RESULT_OK,returnIntent);
 						finish();
-						return;
+					}else{
+						Toast.makeText(getApplicationContext(), "Signin Failed: "+rs.getErrorCode(), Toast.LENGTH_LONG).show();
 					}
+				}else if( result instanceof Exception ){
+					Toast.makeText(getApplicationContext(), "Signin Failed: "+((Exception)result).getLocalizedMessage(), Toast.LENGTH_LONG).show();
+				}else{
+					Toast.makeText(getApplicationContext(), "Signin Failed", Toast.LENGTH_LONG).show();
 				}
-				Toast.makeText(getApplicationContext(), "Signin Failed", Toast.LENGTH_LONG).show();
 			}
 
 			@Override
