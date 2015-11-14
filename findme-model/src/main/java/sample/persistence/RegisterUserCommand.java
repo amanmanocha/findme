@@ -1,9 +1,11 @@
 package sample.persistence;
 
+import java.io.Serializable;
+
 import findme.model.User;
 
 
-public class RegisterUserCommand {
+public class RegisterUserCommand implements Serializable {
 	
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;

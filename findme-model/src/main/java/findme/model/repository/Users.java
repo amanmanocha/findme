@@ -27,7 +27,12 @@ public class Users implements Serializable {
         return users.size();
     }
 
-    @Override
+    
+    public List<User> getUsers() {
+		return users;
+	}
+
+	@Override
     public String toString() {
         return users.toString();
     }

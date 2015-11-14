@@ -1,15 +1,23 @@
 package sample.persistence;
 
 //#persistent-actor-example
+
+import scala.concurrent.Await;
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.japi.Procedure;
+import akka.pattern.Patterns;
 import akka.persistence.SnapshotOffer;
 import akka.persistence.UntypedPersistentActor;
+import akka.util.Timeout;
 
 import com.google.common.collect.Lists;
 
+import findme.model.PhoneNumber;
+import findme.model.User;
 import findme.model.repository.Users;
 
 
@@ -49,6 +57,9 @@ public class UserActor extends UntypedPersistentActor {
 			if(commandStr.equals("print")) {
 				System.out.println(getNumEvents());
 			}
+			if(commandStr.equals("get")) {
+				sender().tell(userRepository.getUsers().get(0), null);
+			}
 		}
 	}
 
@@ -82,8 +93,13 @@ public class UserActor extends UntypedPersistentActor {
 				Props.create(UserActor.class),
 				"persistentUserActor-4-java");
 
-//		persistentActor.tell(new AddUserCommand(new User("Aman", "Manocha", Lists.newArrayList(PhoneNumber.newNumber(1)))), null);
+		persistentActor.tell(new RegisterUserCommand(new User("Aman", "Manocha", Lists.newArrayList(PhoneNumber.newNumber(1)))), null);
 
+		Timeout timeout = new Timeout(Duration.create(5, "seconds"));
+		Future<Object> future = Patterns.ask(persistentActor, "get", timeout);
+		
+		User result = (User) Await.result(future, timeout.duration());
+		System.out.println(result);
 		Thread.sleep(1000);
 		persistentActor.tell("print", null);
 
