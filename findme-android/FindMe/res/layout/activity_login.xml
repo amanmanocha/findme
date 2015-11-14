@@ -48,7 +48,7 @@
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
-                android:layout_marginBottom="56dp"
+                android:layout_marginBottom="25dp"
                 android:maxLines="1"
                 android:singleLine="true" />
             

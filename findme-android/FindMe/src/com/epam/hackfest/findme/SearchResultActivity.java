@@ -97,7 +97,7 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 			protected void onPostExecute(Object result) {
 				super.onPostExecute(result);
 				if( result instanceof Exception){
-					buttonRequest.setTag(R.string.request);
+					buttonRequest.setText(R.string.request);
 					Toast.makeText(getApplicationContext(), "Error: "+((Exception)result).getLocalizedMessage(), Toast.LENGTH_LONG).show();
 				}else{
 					Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
@@ -137,25 +137,6 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.search_result, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
 	private class ResultAdapter extends BaseAdapter{
 
 		private Context context;
