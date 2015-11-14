@@ -1,6 +1,7 @@
 package com.epam.hackfest.findme;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,13 +21,11 @@ public class ProcessRequestActivity extends Activity {
 		setTitle(R.string.process_request_title);
 		setContentView(R.layout.activity_process_request);
 		
-		String details = getIntent().getExtras().getString("request");
-		
 		this.textViewDetail = (TextView)this.findViewById(R.id.textViewRequest);
 		this.buttonAccept = (Button)this.findViewById(R.id.buttonAccept);
 		this.buttonIgnore = (Button)this.findViewById(R.id.buttonIgnore);
 		
-		textViewDetail.setText(details);
+		textViewDetail.setText(Utils.getRequest().toString());
 		
 		buttonAccept.setOnClickListener(new OnClickListener() {
 			@Override
@@ -35,6 +34,7 @@ public class ProcessRequestActivity extends Activity {
 				finish();
 			}
 		});
+		
 		buttonIgnore.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -42,4 +42,5 @@ public class ProcessRequestActivity extends Activity {
 			}
 		});
 	}
+	
 }

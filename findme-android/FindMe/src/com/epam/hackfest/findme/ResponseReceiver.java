@@ -11,8 +11,12 @@ public class ResponseReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String details = intent.getExtras().getString("request");
 		Intent notificationIntent = new Intent(context, ProcessRequestActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		notificationIntent.putExtra("request", details);
+		
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
 				.setContentIntent(pendingIntent)

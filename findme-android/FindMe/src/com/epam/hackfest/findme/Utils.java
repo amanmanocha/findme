@@ -29,6 +29,8 @@ public class Utils {
 	
 	private static String userName;
 	private static String phoneNumber;
+	
+	private static Request mRequest;
 
 	private static Object post(String strUrl, Map<String, String> params){
 		try{
@@ -194,7 +196,12 @@ public class Utils {
 	}
 
 	public static Request pull() {
-		return new Request();
+		mRequest = new Request();
+		return mRequest;
+	}
+	
+	public static Request getRequest(){
+		return mRequest;
 	}
 
 }
