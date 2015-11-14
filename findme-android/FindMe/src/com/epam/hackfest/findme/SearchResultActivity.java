@@ -159,7 +159,9 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	}
 
 	private void callNumber() {
-		
+		String phoneNumber = "138x318861x";
+		Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+		startActivity(intent);
 	}
 
 	@Override
