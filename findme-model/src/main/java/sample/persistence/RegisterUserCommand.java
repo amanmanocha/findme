@@ -7,8 +7,8 @@ import findme.model.PhoneNumber;
 
 public class RegisterUserCommand implements Serializable {
 	
-	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
+	
 	private final String firstName;
 	private final String lastName;
 	private final PhoneNumber phoneNumber;

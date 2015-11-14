@@ -13,15 +13,17 @@ import akka.actor.Props;
 @EnableAutoConfiguration
 public class Application {
 
+	private static ActorRef persistentActor;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 
 		final ActorSystem system = ActorSystem.create("findMe");
-		final ActorRef persistentActor = system.actorOf(
+		persistentActor = system.actorOf(
 				Props.create(UserActor.class), "persistentUserActor-4-java");
 	}
 	
-	public static void getActor() {
-		
+	public static ActorRef getActor() {
+		return persistentActor;
 	}
 }

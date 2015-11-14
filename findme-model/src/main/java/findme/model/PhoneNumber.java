@@ -17,5 +17,10 @@ public class PhoneNumber implements Serializable {
 	public static PhoneNumber empty() {
 		return new PhoneNumber("");
 	}
+
+	@Override
+	public String toString() {
+		return "PhoneNumber [number=" + number + "]";
+	}
 	
 }

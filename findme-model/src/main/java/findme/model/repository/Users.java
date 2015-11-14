@@ -7,7 +7,7 @@ import java.util.List;
 import com.google.common.base.Optional;
 
 import sample.persistence.RegisterUserEvent;
-import sample.persistence.SetPrivateNumberEvent;
+import sample.persistence.SetOldNumberEvent;
 import findme.model.PhoneNumber;
 import findme.model.User;
 
@@ -39,6 +39,7 @@ public class Users implements Serializable {
 		User user = User.newUser(addUserEvent.getFirstName(),
 				addUserEvent.getLastName(), addUserEvent.getPhoneNumber());
 		users.add(user);
+		System.out.println(users);
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class Users implements Serializable {
 		return Optional.absent();
 	}
 
-	public void update(SetPrivateNumberEvent evt) {
+	public void update(SetOldNumberEvent evt) {
 		Optional<User> userOptional = find(evt.getCurrentNumber());
 		if(userOptional.isPresent()) {
 			User user = userOptional.get();
@@ -62,7 +63,24 @@ public class Users implements Serializable {
 			
 			users.remove(user);
 			users.add(updatedUser);
+			System.out.println("Updated : " + users);
+		} else {
+			System.out.println("not present");
 		}
+	}
+
+	public Optional<User> find(String firstName, String lastName,
+			PhoneNumber oldPhoneNumber) {
+		for (User user : users)
+			if (matchesSearchCriteria(firstName, lastName, oldPhoneNumber, user))
+				return Optional.of(user);
+
+		return Optional.absent();
+	}
+
+	private boolean matchesSearchCriteria(String firstName, String lastName,
+			PhoneNumber oldPhoneNumber, User user) {
+		return (user.getFirstName().equals(firstName)  || user.getLastName().equals(lastName)) && user.getOldPhoneNumber().equals(oldPhoneNumber);
 	}
 
 }

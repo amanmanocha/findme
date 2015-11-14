@@ -53,4 +53,12 @@ public class User implements Serializable {
 				oldPhoneNumber, isCurrentNumberPublic);
 	}
 
+	@Override
+	public String toString() {
+		return "User [firstName=" + firstName + ", lastName=" + lastName
+				+ ", currentPhoneNumber=" + currentPhoneNumber
+				+ ", oldPhoneNumber=" + oldPhoneNumber
+				+ ", isCurrentNumberPublic=" + isCurrentNumberPublic + "]";
+	}
+	
 }

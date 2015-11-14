@@ -12,6 +12,7 @@ import akka.persistence.SnapshotOffer;
 import akka.persistence.UntypedPersistentActor;
 import akka.util.Timeout;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import findme.model.PhoneNumber;
@@ -32,10 +33,12 @@ public class UserActor extends UntypedPersistentActor {
 
 	@Override
 	public void onReceiveRecover(Object msg) {
+		System.out.println("recover " + msg);
 		if (msg instanceof RegisterUserEvent) {
 			userRepository.update((RegisterUserEvent) msg);
-		} else if (msg instanceof SnapshotOffer) {
-			userRepository = (Users) ((SnapshotOffer) msg).snapshot();
+		}
+		if (msg instanceof SetOldNumberEvent) {
+			userRepository.update((SetOldNumberEvent) msg);
 		} else {
 			unhandled(msg);
 		}
@@ -43,20 +46,28 @@ public class UserActor extends UntypedPersistentActor {
 
 	@Override
 	public void onReceiveCommand(Object command) {
+		System.out.println(command);
 		if (command instanceof RegisterUserCommand) {
 			registerUser(command);
 		}
-		if (command instanceof SetPrivateNumberCommand) {
+		if (command instanceof SetOldNumberCommand) {
 			setPrivateNumber(command);
+		}
+		if (command instanceof SearchUserCommand) {
+			SearchUserCommand searchUserCommand = (SearchUserCommand) command;
+			Optional<User> optional = userRepository.find(
+					searchUserCommand.getFirstName(),
+					searchUserCommand.getLastName(),
+					searchUserCommand.getOldPhoneNumber());
+			if (optional.isPresent())
+				sender().tell(optional.get(), null);
+
 		}
 		if (command instanceof String) {
 			String commandStr = (String) command;
-			if (commandStr.equals("print")) {
+			if (commandStr.equals("print"))
 				System.out.println(getNumEvents());
-			}
-			if (commandStr.equals("get")) {
-				sender().tell(userRepository.getUsers().get(0), null);
-			}
+
 		}
 	}
 
@@ -67,6 +78,7 @@ public class UserActor extends UntypedPersistentActor {
 		final RegisterUserEvent addUserEvent = new RegisterUserEvent(
 				addUserCommand.getFirstName(), addUserCommand.getLastName(),
 				addUserCommand.getPhoneNumber());
+		
 		persistAll(Lists.newArrayList(addUserEvent),
 				new Procedure<RegisterUserEvent>() {
 					public void apply(RegisterUserEvent evt) throws Exception {
@@ -77,14 +89,14 @@ public class UserActor extends UntypedPersistentActor {
 	}
 
 	private void setPrivateNumber(Object command) {
-		SetPrivateNumberCommand setPrivateNumberCommand = (SetPrivateNumberCommand) command;
+		SetOldNumberCommand setPrivateNumberCommand = (SetOldNumberCommand) command;
 
-		final SetPrivateNumberEvent setPrivateNumberEvent = new SetPrivateNumberEvent(
+		final SetOldNumberEvent setPrivateNumberEvent = new SetOldNumberEvent(
 				setPrivateNumberCommand.getCurrentNumber(),
 				setPrivateNumberCommand.getOldNumber(),
 				setPrivateNumberCommand.isCurrentNumberPublic());
-		persist(setPrivateNumberEvent, new Procedure<SetPrivateNumberEvent>() {
-			public void apply(SetPrivateNumberEvent evt) throws Exception {
+		persist(setPrivateNumberEvent, new Procedure<SetOldNumberEvent>() {
+			public void apply(SetOldNumberEvent evt) throws Exception {
 				userRepository.update(evt);
 				getContext().system().eventStream().publish(evt);
 			}
@@ -96,17 +108,23 @@ public class UserActor extends UntypedPersistentActor {
 		final ActorRef persistentActor = system.actorOf(
 				Props.create(UserActor.class), "persistentUserActor-4-java");
 
-		persistentActor
-				.tell(new RegisterUserCommand("Aman", "Manocha", new PhoneNumber("123456")), null);
+		PhoneNumber phoneNumber = new PhoneNumber("123456");
+		persistentActor.tell(new RegisterUserCommand("Aman", "Manocha",
+				phoneNumber), null);
 
-		Timeout timeout = new Timeout(Duration.create(5, "seconds"));
-		Future<Object> future = Patterns.ask(persistentActor, "get", timeout);
+		PhoneNumber oldPhoneNumber = new PhoneNumber("1234567");
+		persistentActor.tell(new SetOldNumberCommand(true, phoneNumber, oldPhoneNumber), null);
+
+		Timeout timeout = new Timeout(Duration.create(5, "minutes"));
+		Future<Object> future = Patterns.ask(persistentActor,
+				new SearchUserCommand("Aman", "Manocha", oldPhoneNumber),
+				10 * 1000);
 
 		User result = (User) Await.result(future, timeout.duration());
 		System.out.println(result);
-		Thread.sleep(1000);
-		persistentActor.tell("print", null);
-
-		system.terminate();
+//		Thread.sleep(1000);
+//		persistentActor.tell("print", null);
+//
+//		system.terminate();
 	}
 }
