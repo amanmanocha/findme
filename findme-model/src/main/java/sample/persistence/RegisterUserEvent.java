@@ -29,4 +29,10 @@ public class RegisterUserEvent implements Serializable {
 		return phoneNumber;
 	}
 
+	@Override
+	public String toString() {
+		return "RegisterUserEvent [firstName=" + firstName + ", lastName="
+				+ lastName + ", phoneNumber=" + phoneNumber + "]";
+	}
+	
 }
