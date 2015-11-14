@@ -26,4 +26,10 @@ public class SearchUserCommand {
 		return oldPhoneNumber;
 	}
 
+	@Override
+	public String toString() {
+		return "SearchUserCommand [firstName=" + firstName + ", lastName="
+				+ lastName + ", oldPhoneNumber=" + oldPhoneNumber + "]";
+	}
+
 }

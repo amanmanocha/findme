@@ -8,7 +8,6 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.japi.Procedure;
 import akka.pattern.Patterns;
-import akka.persistence.SnapshotOffer;
 import akka.persistence.UntypedPersistentActor;
 import akka.util.Timeout;
 
@@ -17,7 +16,7 @@ import com.google.common.collect.Lists;
 
 import findme.model.PhoneNumber;
 import findme.model.User;
-import findme.model.repository.Users;
+import findme.model.repository.UserRespository;
 
 public class UserActor extends UntypedPersistentActor {
 	@Override
@@ -25,7 +24,7 @@ public class UserActor extends UntypedPersistentActor {
 		return "user-id-1";
 	}
 
-	private Users userRepository = new Users();
+	private UserRespository userRepository = new UserRespository();
 
 	public int getNumEvents() {
 		return userRepository.size();
@@ -59,14 +58,12 @@ public class UserActor extends UntypedPersistentActor {
 					searchUserCommand.getFirstName(),
 					searchUserCommand.getLastName(),
 					searchUserCommand.getOldPhoneNumber());
-			if (optional.isPresent())
-				sender().tell(optional.get(), null);
-
+			sender().tell(optional, null);
 		}
 		if (command instanceof String) {
 			String commandStr = (String) command;
 			if (commandStr.equals("print"))
-				System.out.println(getNumEvents());
+				System.out.println(userRepository.getUsers());
 
 		}
 	}
@@ -78,7 +75,7 @@ public class UserActor extends UntypedPersistentActor {
 		final RegisterUserEvent addUserEvent = new RegisterUserEvent(
 				addUserCommand.getFirstName(), addUserCommand.getLastName(),
 				addUserCommand.getPhoneNumber());
-		
+
 		persistAll(Lists.newArrayList(addUserEvent),
 				new Procedure<RegisterUserEvent>() {
 					public void apply(RegisterUserEvent evt) throws Exception {
@@ -105,26 +102,34 @@ public class UserActor extends UntypedPersistentActor {
 
 	public static void main(String... args) throws Exception {
 		final ActorSystem system = ActorSystem.create("example");
-		final ActorRef persistentActor = system.actorOf(
+		final ActorRef userActor = system.actorOf(
 				Props.create(UserActor.class), "persistentUserActor-4-java");
 
-		PhoneNumber phoneNumber = new PhoneNumber("123456");
-		persistentActor.tell(new RegisterUserCommand("Aman", "Manocha",
-				phoneNumber), null);
+		userActor.tell("print", null);
+
+		PhoneNumber currentPhoneNumber = new PhoneNumber("123456");
+		userActor.tell(new RegisterUserCommand("Aman", "Manocha",
+				currentPhoneNumber), null);
 
 		PhoneNumber oldPhoneNumber = new PhoneNumber("1234567");
-		persistentActor.tell(new SetOldNumberCommand(true, phoneNumber, oldPhoneNumber), null);
+		userActor.tell(new SetOldNumberCommand(true, currentPhoneNumber,
+				oldPhoneNumber), null);
+
+		userActor.tell("print", null);
 
 		Timeout timeout = new Timeout(Duration.create(5, "minutes"));
-		Future<Object> future = Patterns.ask(persistentActor,
-				new SearchUserCommand("Aman", "Manocha", oldPhoneNumber),
-				10 * 1000);
+		Future<Object> future = Patterns.ask(userActor, new SearchUserCommand(
+				"Aman", "", oldPhoneNumber), 10 * 1000);
 
-		User result = (User) Await.result(future, timeout.duration());
-		System.out.println(result);
-//		Thread.sleep(1000);
-//		persistentActor.tell("print", null);
-//
-//		system.terminate();
+		Optional<User> result = (Optional<User>) Await.result(future,
+				timeout.duration());
+		if (result.isPresent()) {
+			System.out.println(result.get());
+		} else {
+			System.out.println("not present");
+		}
+
+		system.terminate();
 	}
+
 }

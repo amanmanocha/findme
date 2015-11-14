@@ -31,4 +31,11 @@ public class SetOldNumberEvent implements Serializable {
 		return currentNumberPublic;
 	}
 
+	@Override
+	public String toString() {
+		return "SetOldNumberEvent [currentNumber=" + currentNumber
+				+ ", oldNumber=" + oldNumber + ", currentNumberPublic="
+				+ currentNumberPublic + "]";
+	}
+	
 }
