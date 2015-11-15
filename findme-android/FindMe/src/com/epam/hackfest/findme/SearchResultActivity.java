@@ -62,7 +62,9 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		if( searchResult.isPrivate() ){
 			buttonRequest.setVisibility(View.VISIBLE);
 			buttonRequest.setOnClickListener(this);
+			textViewResult.setText("The phone number is private, you can send a request to the owner ask for access.");
 		}else{
+			textViewResult.setText("No result was found!");
 			buttonRequest.setVisibility(View.INVISIBLE);
 		}
 		buttonRequest.setTextColor(Color.WHITE);
@@ -75,8 +77,10 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		listView = (ListView)this.findViewById(R.id.listViewResult);
 		listView.setAdapter(new ResultAdapter(this.getApplicationContext(), searchResult));
 		
+		this.textViewResult = (TextView)this.findViewById(R.id.textViewResult);
 		this.buttonCall = (Button)this.findViewById(R.id.buttonCall);
 		this.buttonAdd = (Button)this.findViewById(R.id.buttonAdd);
+		textViewResult.setText("Current Number for "+searchResult.getUserName());
 		
 		buttonCall.setOnClickListener(this);
 		buttonAdd.setOnClickListener(this);
@@ -170,6 +174,9 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		values.put("data1", phone);
 		resolver.insert(uri, values);
 		values.clear();
+		
+		Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
+		finish();
 	}
 
 	private void callNumber() {

@@ -140,6 +140,9 @@ public class Utils {
 //				}
 				sr.addPhoneNumber(number);
 			}
+			if( obj.has("currentNumberPublic") ){
+				sr.setPrivate(!Boolean.parseBoolean(obj.getString("currentNumberPublic")));
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
