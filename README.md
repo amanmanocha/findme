@@ -1,4 +1,4 @@
-findMe is a rather simple, cool and easy-to-use application to share your current running number with anyone you wish to.
+FindMe is a rather simple, cool and easy-to-use application to share your current running number with anyone you wish to.
 
 Allows user to look up for your current number using your name and any one of your old contact numbers. Search function does not require the registration.
 
@@ -7,7 +7,10 @@ You can mark your number as private if you wish to, in which case the user who i
 
 That's it! No more hassles to share your new number with everyone manually, keep your friends/relatives happy!
 
-Available here:
+Latest technologies used:
+Akka persisence, Event Sourcing, CQRS, Android
+
+Service available here:
 
 http://192.168.2.38:8080/signin?name={name}&phone={current-phone-number}&password={password}
 
