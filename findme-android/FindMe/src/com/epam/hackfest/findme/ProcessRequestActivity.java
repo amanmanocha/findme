@@ -60,16 +60,18 @@ public class ProcessRequestActivity extends Activity {
 			protected void onPostExecute(Object result) {
 				super.onPostExecute(result);
 				progressBar.setVisibility(View.GONE);
-				if( result instanceof String ){
-					String msg = "Request Accepted!";
-					if( "ignore".equals(method) ){
-						msg = "Request Ignored!";
-					}
-					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-					finish();
-				}else if( result instanceof Exception){
-					Toast.makeText(getApplicationContext(), "Error: "+((Exception)result).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-				}
+//				if( result instanceof String ){
+//					String msg = "Request Accepted!";
+//					if( "ignore".equals(method) ){
+//						msg = "Request Ignored!";
+//					}
+//					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+//					finish();
+//				}else if( result instanceof Exception){
+//					Toast.makeText(getApplicationContext(), "Error: "+((Exception)result).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//				}
+				Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+				finish();
 			}
 
 			@Override

@@ -227,10 +227,23 @@ public class Utils {
 		mRequest = null;
 		Object result = get(url, params);
 		if( result instanceof String){
-			String s = (String)result;
-			Request request = new Request();
-			
-			
+			//[{"description":"","requestorPhone":{"number":"999"},"requesteePhone":{"number":"123"}}]
+			String jsonString = (String)result;
+			try {
+				JSONArray array = new JSONArray(jsonString);
+				if( array.length() > 0 ){
+					Request request = new Request();
+					JSONObject obj = array.getJSONObject(0);
+					if( obj.has("requestorPhone") ){
+						request.setFromPhoneNumber(obj.getJSONObject("requestorPhone").getString("number"));
+					}else if( obj.has("requestorName") ){
+						request.setFromUserName(obj.getString("requestorName"));
+					}
+					mRequest = request;
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 		return mRequest;
 	}
