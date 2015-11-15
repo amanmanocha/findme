@@ -1,6 +1,7 @@
 package com.epam.hackfest.findme;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,6 +38,7 @@ public class ProfileActivity extends Activity {
 				doUpdate();
 			}
 		});
+		buttonUpdate.setTextColor(Color.WHITE);
 	}
 
 	protected void doUpdate() {

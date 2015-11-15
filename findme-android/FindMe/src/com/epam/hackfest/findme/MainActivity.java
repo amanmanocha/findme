@@ -3,6 +3,7 @@ package com.epam.hackfest.findme;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -34,6 +35,7 @@ public class MainActivity extends Activity {
         this.progressBarSearch = (ProgressBar)this.findViewById(R.id.progressBarSearch);
         progressBarSearch.setVisibility(View.INVISIBLE);
         
+        buttonSearch.setTextColor(Color.WHITE);
         buttonSearch.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -122,9 +124,11 @@ public class MainActivity extends Activity {
     	if( Utils.isSignedIn() ){
     		menu.getItem(0).setVisible(true);
     		menu.getItem(1).setVisible(false);
+    		menu.getItem(2).setVisible(true);
     	}else{
     		menu.getItem(0).setVisible(false);
     		menu.getItem(1).setVisible(true);
+    		menu.getItem(2).setVisible(false);
     	}
     	return super.onPrepareOptionsMenu(menu);
 	}
@@ -146,6 +150,10 @@ public class MainActivity extends Activity {
         	Intent intent = new Intent(this, LoginActivity.class);
         	startActivityForResult(intent, LoginActivity.LOGIN);
             return true;
+        }else if (id == R.id.action_signout) {
+        	Utils.setSignInParams(null, null);
+        	invalidateOptionsMenu();
+        	return true;
         }
         return super.onOptionsItemSelected(item);
     }

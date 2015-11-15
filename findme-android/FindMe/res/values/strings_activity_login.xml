@@ -1,12 +1,13 @@
 <resources>
 
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Sign In</string>
 
     <string name="prompt_name">Your Full Name</string>
     <string name="prompt_phone">Your Phone Number</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_in">Sign In or Register</string>
+    <string name="action_sign_in_short">Sign In</string>
+    <string name="action_sign_out">Sign Out</string>
     <string name="error_field_required">This field is required</string>
 
 </resources>

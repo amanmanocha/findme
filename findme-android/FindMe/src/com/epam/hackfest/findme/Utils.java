@@ -118,6 +118,9 @@ public class Utils {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("name", name);
 		params.put("phone", phone);
+		if( phoneNumber != null ){
+			params.put("curr", phoneNumber);
+		}
 		String url = HOSTNAME+"search";
 		return get(url, params);
 	}

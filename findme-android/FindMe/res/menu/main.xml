@@ -13,5 +13,11 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/action_sign_in_short"/>
+    
+    <item
+        android:id="@+id/action_signout"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_sign_out"/>
 
 </menu>

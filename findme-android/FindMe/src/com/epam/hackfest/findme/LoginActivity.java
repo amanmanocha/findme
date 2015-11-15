@@ -4,6 +4,7 @@ import com.epam.hackfest.findme.domain.ResultState;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 		
 		progressBar.setVisibility(View.INVISIBLE);
 		buttonSignIn.setOnClickListener(this);
+		
+		buttonSignIn.setTextColor(Color.WHITE);
 	}
 
 	@Override

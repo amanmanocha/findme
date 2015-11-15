@@ -65,6 +65,7 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		}else{
 			buttonRequest.setVisibility(View.INVISIBLE);
 		}
+		buttonRequest.setTextColor(Color.WHITE);
 	}
 
 	private void createWithResults(){

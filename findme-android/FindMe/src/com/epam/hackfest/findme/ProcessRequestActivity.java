@@ -1,6 +1,7 @@
 package com.epam.hackfest.findme;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -46,6 +47,8 @@ public class ProcessRequestActivity extends Activity {
 				processRequest("ignore");
 			}
 		});
+		buttonAccept.setTextColor(Color.WHITE);
+		buttonIgnore.setTextColor(Color.WHITE);
 	}
 	
 	private void processRequest(final String method) {
