@@ -23,6 +23,7 @@ public class ProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
+		setTitle("Update");
 		
 		this.editTextNumber = (EditText)this.findViewById(R.id.editTextPhoneNumber);
 		this.checkBoxPrivate = (CheckBox)this.findViewById(R.id.checkBoxPrivate);
