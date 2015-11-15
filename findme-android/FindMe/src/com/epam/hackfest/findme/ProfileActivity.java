@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class ProfileActivity extends Activity {
 
@@ -57,8 +56,11 @@ public class ProfileActivity extends Activity {
 				super.onPostExecute(result);
 				progressBar.setVisibility(View.GONE);
 				buttonUpdate.setText(R.string.update);
-				if( result instanceof String ){
-					
+				if( result instanceof Exception){
+					Toast.makeText(getApplicationContext(), "Error: "+((Exception)result).getLocalizedMessage(), Toast.LENGTH_LONG).show();
+				}else{
+					Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
+					finish();
 				}
 			}
 

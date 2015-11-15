@@ -106,6 +106,8 @@ public class MainActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if( requestCode == LoginActivity.LOGIN ){
 			if( resultCode == RESULT_OK ){
+				editTextName.setText("");
+				editTextPhone.setText("");
 				invalidateOptionsMenu();
 				startPullService();
 			}

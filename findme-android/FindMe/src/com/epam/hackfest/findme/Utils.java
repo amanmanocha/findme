@@ -217,7 +217,18 @@ public class Utils {
 	}
 
 	public static Request pull() {
-		mRequest = new Request();
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("phone", phoneNumber);
+		
+		String url = HOSTNAME+"fetch";
+		mRequest = null;
+		Object result = get(url, params);
+		if( result instanceof String){
+			String s = (String)result;
+			Request request = new Request();
+			
+			
+		}
 		return mRequest;
 	}
 	

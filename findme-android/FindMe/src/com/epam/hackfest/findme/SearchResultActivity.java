@@ -79,6 +79,9 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		this.buttonAdd = (Button)this.findViewById(R.id.buttonAdd);
 		
 		buttonCall.setOnClickListener(this);
+		buttonAdd.setOnClickListener(this);
+		buttonCall.setTextColor(Color.WHITE);
+		buttonAdd.setTextColor(Color.WHITE);
 	}
 	
 	@Override
@@ -110,8 +113,8 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 			protected void onPostExecute(Object result) {
 				super.onPostExecute(result);
 				progressBar.setVisibility(View.GONE);
+				buttonRequest.setText(R.string.request);
 				if( result instanceof Exception){
-					buttonRequest.setText(R.string.request);
 					Toast.makeText(getApplicationContext(), "Error: "+((Exception)result).getLocalizedMessage(), Toast.LENGTH_LONG).show();
 				}else{
 					Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
