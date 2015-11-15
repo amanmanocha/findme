@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	private TextView textViewResult;
 	private Button buttonRequest;
 	private SearchResult searchResult;
+	private ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,9 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 		
 		this.textViewResult = (TextView)this.findViewById(R.id.textViewResult);
 		this.buttonRequest = (Button)this.findViewById(R.id.buttonRequest);
+		
+		this.progressBar = (ProgressBar)this.findViewById(R.id.progressBar);
+		this.progressBar.setVisibility(View.INVISIBLE);
 		
 		if( searchResult.isPrivate() ){
 			buttonRequest.setVisibility(View.VISIBLE);
@@ -96,11 +101,14 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	}
 	
 	private void sendRequest() {
+		if( progressBar.getVisibility() == View.VISIBLE )return;
+		
 		AsyncTask<String, Void, Object> task = new AsyncTask<String, Void, Object>(){
 			
 			@Override
 			protected void onPostExecute(Object result) {
 				super.onPostExecute(result);
+				progressBar.setVisibility(View.GONE);
 				if( result instanceof Exception){
 					buttonRequest.setText(R.string.request);
 					Toast.makeText(getApplicationContext(), "Error: "+((Exception)result).getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -113,6 +121,7 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
+				progressBar.setVisibility(View.VISIBLE);
 				buttonRequest.setText(R.string.sendingRequest);
 			}
 
@@ -135,8 +144,9 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	}
 
 	private void addNumberToContactList() {
-		String userName="user1";
-		String phone="13812341234";
+		if( !searchResult.hasPhoneNumbers() )return;
+		String userName = searchResult.getUserName();
+		String phone = searchResult.getPhoneNumbers().get(0);
 
 		Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
 		ContentResolver resolver = this.getContentResolver();
@@ -159,7 +169,9 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 	}
 
 	private void callNumber() {
-		String phoneNumber = "138x318861x";
+		if( !searchResult.hasPhoneNumbers() )return;
+		String phoneNumber = searchResult.getPhoneNumbers().get(0);
+		
 		Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
 		startActivity(intent);
 	}
@@ -195,12 +207,13 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 			View view = inflater.inflate(R.layout.item_result, null);
 			TextView textView = (TextView)view.findViewById(R.id.textViewItem);
 			textView.setText(phoneNumbers.get(position));
-			view.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					v.setBackgroundColor(Color.BLUE);
-				}
-			});
+			view.setBackgroundColor(Color.BLUE);
+//			view.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					v.setBackgroundColor(Color.BLUE);
+//				}
+//			});
 			return view;
 		}
 		

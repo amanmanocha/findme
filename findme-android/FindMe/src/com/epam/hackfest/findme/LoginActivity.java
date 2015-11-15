@@ -57,6 +57,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 		String phone = editTextPhone.getText().toString();
 		String pwd = editTextPassword.getText().toString();
 		
+		if( progressBar.getVisibility() == View.VISIBLE )return;
+		
 		AsyncTask<String, Void, Object> task = new AsyncTask<String, Void, Object>(){
 			
 			@Override

@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void doSearch(String name, String phone) {
+		if( progressBarSearch.getVisibility() == View.VISIBLE )return;
 		
 		AsyncTask<String, Void, Object> task = new AsyncTask<String, Void, Object>(){
 			
@@ -110,7 +111,7 @@ public class MainActivity extends Activity {
 	}
 
     private void startPullService() {
-    	if( !Utils.isSignedIn() ){
+    	if( Utils.isSignedIn() ){
 	    	Intent serviceIntent = new Intent(this, PullService.class);
 	        startService(serviceIntent);
     	}

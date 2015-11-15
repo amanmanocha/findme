@@ -222,4 +222,13 @@ public class Utils {
 		return mRequest;
 	}
 
+	public static Object processRequest(String method, String phone) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("phone", phoneNumber);
+		params.put("dest", phone);
+		
+		String url = HOSTNAME + method;
+		return post(url, params);
+	}
+
 }

@@ -10,12 +10,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 public class ProfileActivity extends Activity {
 
 	private EditText editTextNumber;
 	private CheckBox checkBoxPrivate;
 	private Button buttonUpdate;
+	private ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,9 @@ public class ProfileActivity extends Activity {
 		this.editTextNumber = (EditText)this.findViewById(R.id.editTextPhoneNumber);
 		this.checkBoxPrivate = (CheckBox)this.findViewById(R.id.checkBoxPrivate);
 		this.buttonUpdate = (Button)this.findViewById(R.id.buttonUpdate);
+		
+		this.progressBar = (ProgressBar)this.findViewById(R.id.progressBar);
+		this.progressBar.setVisibility(View.INVISIBLE);
 		
 		buttonUpdate.setOnClickListener(new OnClickListener() {
 			@Override
@@ -38,6 +43,7 @@ public class ProfileActivity extends Activity {
 		if( !Utils.isValid(editTextNumber) ){
 			return;
 		}
+		if( progressBar.getVisibility() == View.VISIBLE )return;
 		
 		String phone = editTextNumber.getText().toString();
 		boolean isPrivate = checkBoxPrivate.isChecked();
@@ -47,6 +53,7 @@ public class ProfileActivity extends Activity {
 			@Override
 			protected void onPostExecute(Object result) {
 				super.onPostExecute(result);
+				progressBar.setVisibility(View.GONE);
 				buttonUpdate.setText(R.string.update);
 				if( result instanceof String ){
 					
@@ -56,7 +63,8 @@ public class ProfileActivity extends Activity {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				buttonUpdate.setText("Pending...");
+				progressBar.setVisibility(View.VISIBLE);
+				buttonUpdate.setText("Updating...");
 			}
 
 			@Override
